@@ -8,9 +8,11 @@
     "start": "cd packages/react-frontend && npm run dev"
   },
   "author": "",
-  "license": "ISC"
-  ,
+  "license": "ISC",
   "workspaces": [
-      "packages/*"
-  ]
+    "packages/*"
+  ],
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
 }
