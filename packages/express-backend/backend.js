@@ -46,23 +46,38 @@ const users = {
     ]
   };
 
+  //step 4 and 7, get users by name and job
   const findUserByName = (name) => {
     return users["users_list"].filter(
       (user) => user["name"] === name
     );
   };
-  
+
+  const findUserByNameAndJob = (name,job) => {
+    return users["users_list"].filter(
+      (user) => user["name"] === name && user["job"] === job
+    );
+  };
+
   app.get("/users", (req, res) => {
     const name = req.query.name;
+    const job = req.query.job;
     if (name != undefined) {
-      let result = findUserByName(name);
-      result = { users_list: result };
-      res.send(result);
+      if(job != undefined) {
+        let result = findUserByNameAndJob(name,job);
+        result = { users_list: result };
+        res.send(result);
+      }
+      else{
+        let result = findUserByName(name);
+        result = { users_list: result };
+        res.send(result);
+      }
     } else {
       res.send(users);
     }
   });
-
+//step 5 get users by id
 const findUserById = (id) =>
 users["users_list"].find((user) => user["id"] === id);
 
@@ -75,7 +90,7 @@ app.get("/users/:id", (req, res) => {
     res.send(result);
   }
 });
-
+//step 6 using post
 const addUser = (user) => {
     users["users_list"].push(user);
     return user;
@@ -86,3 +101,13 @@ const addUser = (user) => {
     addUser(userToAdd);
     res.send();
   });
+
+//step 7 delete 
+  app.delete("/users/:id", (req, res) => {
+    const id = req.params["id"];
+    users["users_list"] = users["users_list"].filter((user) => user["id"] !== id);
+    res.send();
+  });
+
+
+ 
