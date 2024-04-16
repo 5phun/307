@@ -15,7 +15,12 @@ function MyApp() {
   }
   function updateList(person) { 
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
+      .then((res) => {if (res.status === 201) 
+                      {setCharacters([...characters, person]);
+                      }
+                    else{
+                      console.log("status code 201 did not return", res.status);
+                    }})
       .catch((error) => {
         console.log(error);
       })

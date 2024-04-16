@@ -92,16 +92,22 @@ app.get("/users/:id", (req, res) => {
     res.send(result);
   }
 });
+// Implement an ID generator function to generate a random ID 
+const rand_id = () =>
+{
+  return Math.floor(Math.random() * 1000000);
+};
 //step 6 using post
 const addUser = (user) => {
+    user.id = rand_id();
     users["users_list"].push(user);
     return user;
   };
-  
+  //implement the 201 HTTP code in response to a successful user insertion in the list.
   app.post("/users", (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
-    res.send();
+    res.status(201).send("Content Created");
   });
 
 //step 7 delete 
