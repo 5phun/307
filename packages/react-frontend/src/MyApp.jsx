@@ -12,10 +12,10 @@ function MyApp() {
         if (i === index) {
           deleteUser(character.id).then((res) => {if (res.status === 204) 
             {
-              console.log('sucessfully deleted');
+              console.log('successfully deleted, status code 204');
             }
           else{
-            console.log("resource not found, error ", res.status);
+            console.log("resource not found, status code ", res.status);
           }})
         }
         return i !== index;
@@ -26,16 +26,16 @@ function MyApp() {
     postUser(person)
       .then((res) => {if (res.status === 201) 
                       {
-                        console.log('status sucess');
+                        console.log('successfully created content, status code 201');
                         return res.json();
                       }
                     else{
-                      console.log("status code 201 did not return", res.status);
+                      console.log("did not create content, status code", res.status);
                     }})
       /*On the frontend, you should update the state with the right representation of the
        object that we requested to be inserted (now, it'll have the id field).*/
       .then((json) => {setCharacters([...characters, json]);
-      console.log('Successfully added user:', json);})
+      console.log('successfully added user:', json);})
       .catch((error) => {
         console.log(error);
       })

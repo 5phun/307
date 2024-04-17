@@ -108,7 +108,7 @@ const addUser = (user) => {
     const userToAdd = req.body;
     const newuser = addUser(userToAdd);
     //Return newly created object from POST
-    console.log(newuser);
+    //console.log(newuser);
     res.status(201).json(newuser);
   });
 
