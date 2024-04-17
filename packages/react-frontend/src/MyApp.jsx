@@ -9,6 +9,15 @@ function MyApp() {
 
   function removeOneCharacter(index) {
       const updated = characters.filter((character, i) => {
+        if (i === index) {
+          deleteUser(character.id).then((res) => {if (res.status === 204) 
+            {
+              console.log('sucessfully deleted');
+            }
+          else{
+            console.log("resource not found, error ", res.status);
+          }})
+        }
         return i !== index;
       });
       setCharacters(updated);
@@ -50,6 +59,13 @@ function MyApp() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(person),
+    });
+
+    return promise;
+  }
+  function deleteUser(id) {
+    const promise = fetch(`Http://localhost:8000/users/${id}`, {
+      method: "DELETE"
     });
 
     return promise;

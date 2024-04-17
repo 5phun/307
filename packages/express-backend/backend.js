@@ -95,7 +95,7 @@ app.get("/users/:id", (req, res) => {
 // Implement an ID generator function to generate a random ID 
 const rand_id = () =>
 {
-  return Math.floor(Math.random() * 1000000);
+  return String(Math.floor(Math.random() * 1000000));
 };
 //step 6 using post
 const addUser = (user) => {
@@ -115,8 +115,13 @@ const addUser = (user) => {
 //step 7 delete 
   app.delete("/users/:id", (req, res) => {
     const id = req.params["id"];
-    users["users_list"] = users["users_list"].filter((user) => user["id"] !== id);
-    res.send();
+    if (id === undefined)
+    {
+      res.status(404).send("Resource not found")
+    } else {
+      users["users_list"] = users["users_list"].filter((user) => user["id"] !== id);
+      res.status(204).send("Successful delete");
+    }
   });
 
 
