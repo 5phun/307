@@ -16,11 +16,17 @@ function MyApp() {
   function updateList(person) { 
     postUser(person)
       .then((res) => {if (res.status === 201) 
-                      {setCharacters([...characters, person]);
+                      {
+                        console.log('status sucess');
+                        return res.json();
                       }
                     else{
                       console.log("status code 201 did not return", res.status);
                     }})
+      /*On the frontend, you should update the state with the right representation of the
+       object that we requested to be inserted (now, it'll have the id field).*/
+      .then((json) => {setCharacters([...characters, json]);
+      console.log('Successfully added user:', json);})
       .catch((error) => {
         console.log(error);
       })

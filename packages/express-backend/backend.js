@@ -106,8 +106,10 @@ const addUser = (user) => {
   //implement the 201 HTTP code in response to a successful user insertion in the list.
   app.post("/users", (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.status(201).send("Content Created");
+    const newuser = addUser(userToAdd);
+    //Return newly created object from POST
+    console.log(newuser);
+    res.status(201).json(newuser);
   });
 
 //step 7 delete 
