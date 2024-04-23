@@ -86,7 +86,6 @@ app.get("/users/:id", (req, res) => {
 //step 7 delete 
   app.delete("/users/:id", (req, res) => {
     const id = req.params["id"];
-    console.log("delete", id)
     if (id === undefined)
     {
       res.status(404).send("Resource not found")
