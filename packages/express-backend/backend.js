@@ -2,6 +2,8 @@
 import express from "express";
 import cors from "cors";
 
+import userService from "./services/user-service.js";
+
 const app = express();
 const port = 8000;
 
@@ -48,68 +50,37 @@ const users = {
     ]
   };
 
-  //step 4 and 7, get users by name and job
-  const findUserByName = (name) => {
-    return users["users_list"].filter(
-      (user) => user["name"] === name
-    );
-  };
-
-  const findUserByNameAndJob = (name,job) => {
-    return users["users_list"].filter(
-      (user) => user["name"] === name && user["job"] === job
-    );
-  };
-
   app.get("/users", (req, res) => {
     const name = req.query.name;
     const job = req.query.job;
-    if (name != undefined) {
-      if(job != undefined) {
-        let result = findUserByNameAndJob(name,job);
-        result = { users_list: result };
-        res.send(result);
-      }
-      else{
-        let result = findUserByName(name);
-        result = { users_list: result };
-        res.send(result);
-      }
-    } else {
-      res.send(users);
-    }
+    userService
+    .getUsers(name, job)
+    .then((result) => {
+      res.send({ users_list: result });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("An error ocurred in the server.");
+    });
   });
-//step 5 get users by id
-const findUserById = (id) =>
-users["users_list"].find((user) => user["id"] === id);
 
+  
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
-  let result = findUserById(id);
-  if (result === undefined) {
-    res.status(404).send("Resource not found.");
-  } else {
-    res.send(result);
-  }
+  userService.findUserById(id).then((result) => {
+    if (result === undefined || result === null)
+      res.status(404).send("Resource not found.");
+    else res.send({ users_list: result });
+  });
 });
-// Implement an ID generator function to generate a random ID 
-const rand_id = () =>
-{
-  return String(Math.floor(Math.random() * 1000000));
-};
-//step 6 using post
-const addUser = (user) => {
-    user.id = rand_id();
-    users["users_list"].push(user);
-    return user;
-  };
+
   //implement the 201 HTTP code in response to a successful user insertion in the list.
   app.post("/users", (req, res) => {
-    const userToAdd = req.body;
-    const newuser = addUser(userToAdd);
-    //Return newly created object from POST
-    //console.log(newuser);
-    res.status(201).json(newuser);
+  const user = req.body;
+  userService.addUser(user).then((savedUser) => {
+    if (savedUser) res.status(201).send(savedUser);
+    else res.status(500).end();
+  });
   });
 
 //step 7 delete 
