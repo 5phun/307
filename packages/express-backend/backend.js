@@ -86,14 +86,16 @@ app.get("/users/:id", (req, res) => {
 //step 7 delete 
   app.delete("/users/:id", (req, res) => {
     const id = req.params["id"];
+    console.log("delete", id)
     if (id === undefined)
     {
       res.status(404).send("Resource not found")
     } else {
-      users["users_list"] = users["users_list"].filter((user) => user["id"] !== id);
-      res.status(204).send("Successful delete");
-    }
-  });
+      userService.deleteUserById(id).then(() => {
+      res.status(204).send("Successful delete");}
+      )
+    ;
+  }});
 
 
  
